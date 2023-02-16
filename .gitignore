@@ -133,3 +133,4 @@ dmypy.json
 ._*
 .vscode
 tracker_list.json
+conf.json

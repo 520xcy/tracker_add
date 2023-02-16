@@ -7,20 +7,22 @@ import time
 from transmission_rpc import Client
 
 #change_torrent
+if not os.path.exists('conf.json'):
+    with open('conf.json', 'w', encoding='UTF-8') as w:
+        w.write('{\n    "trackers_list_url":[\n        "https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt",\n        "https://cdn.staticaly.com/gh/XIU2/TrackersListCollection/master/best.txt"\n    ],\n    "transmission_rpc_host":"",\n    "transmission_rpc_username":"",\n    "transmission_rpc_passwd":"",\n    "transmission_rpc_port":9091,\n    "filter_list": [\n        "htm", "html", "apk", "url", "直播大秀平台", "网址", "地址", "APP"\n    ]\n}')
+    exit('请先手动conf.json配置')
 
-TrackersListUrl = [
-    'https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt',
-    'https://cdn.staticaly.com/gh/XIU2/TrackersListCollection/master/best.txt'
-]
+with open('conf.json', 'r', encoding='UTF-8') as r:
+        conf = json.loads(r.read())   
 
-transmission_rpc_host='192.168.12.248'
-transmission_rpc_username = '520xcy'
-transmission_rpc_passwd = 'Xcy8444973'
-transmission_rpc_port = 9091
+TrackersListUrl = conf['trackers_list_url']
 
-Filter_List = [
-    'htm', 'html', 'apk', 'url', '直播大秀平台', '网址', '地址', 'APP'
-]
+transmission_rpc_host = conf['transmission_rpc_host']
+transmission_rpc_username = conf['transmission_rpc_username']
+transmission_rpc_passwd = conf['transmission_rpc_passwd']
+transmission_rpc_port = conf['transmission_rpc_port']
+
+Filter_List = conf['filter_list']
 
 
 def update_trackersList():
