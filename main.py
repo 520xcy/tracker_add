@@ -77,11 +77,11 @@ def tracker_Add(client, torrent, trackersList):
 
     try:
         # client.change_torrent(torrent.id, trackerRemove=range(300)) #清空trackersList
-        client.change_torrent(torrent.id, trackerAdd=trackersList)
+        client.change_torrent(torrent.id, tracker_add=trackersList)
 
         print(f'{torrent.id}-{torrent.name}:添加成功')
     except Exception as e:
-        print(f'{torrent.id}-{torrent.name}:添加tracker出错！')
+        print(f'{torrent.id}-{torrent.name}:添加tracker出错!{e}')
 
     # '''一个一个添加，以防整体添加时一个出错，后续的无法添加'''
     # for tl in trackersList:
@@ -97,18 +97,19 @@ def tracker_Add(client, torrent, trackersList):
 def tracker_Clean(client, torrent):
     try:
         client.change_torrent(torrent.id,
-                              trackerRemove=range(300))  #清空trackersList
+                              tracker_remove=[tracker.id for tracker in torrent.trackers])  #清空trackersList
 
         print(f'{torrent.id}-{torrent.name}:清空trackersList!')
     except Exception as e:
-        print(f'{torrent.id}-{torrent.name}:清空trackersList出错!')
+
+        print(f'{torrent.id}-{torrent.name}:清空trackersList出错!{e}')
 
 
 def filter_file(client, torrent):
     '''过滤垃圾文件'''
     #过滤文件
     unwant_list = []
-    for file_id, file in enumerate(torrent.files()):
+    for file_id, file in enumerate(torrent.get_files()):
         for f_s in Filter_List:
             # print(f'{file_id}-{file.name}:{str(file.name).find(f_s)}')
             if str(file.name).find(f_s) > -1:
@@ -140,6 +141,7 @@ def torrent_add_trackers():
         
         tracker_Add(client, t, trackersList) ## trackerAdd
         filter_file(client, t)#过滤垃圾文件
+
 
 
 if __name__ == "__main__":
