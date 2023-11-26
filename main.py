@@ -112,7 +112,7 @@ def filter_file(client, torrent):
     for file_id, file in enumerate(torrent.get_files()):
         for f_s in Filter_List:
             # print(f'{file_id}-{file.name}:{str(file.name).find(f_s)}')
-            if str(file.name).find(f_s) > -1 or len(str(file.name).encode('utf-8')) > 255: #不下载垃圾文件和文件名长度超过255位的文件
+            if str(file.name).find(f_s) > -1 or len(os.path.split(str(file.name))[1].encode('utf-8')) > 250: #不下载垃圾文件和文件名长度超过255位的文件
                 unwant_list.append(file_id)
                 break
                 # print(f'不下载：{file.name}')
